@@ -1,68 +1,81 @@
 # ♟️ Chess Auto Bot
 
-An automated chess bot built with **Python** that can analyze positions, select moves, and play chess automatically. The project combines chess-board handling with a chess engine to experiment with move generation, evaluation, and automation.
+A Python-based chess automation project that uses **computer vision, chess logic, and Stockfish** to detect a chess position, determine a strong move, and automate the move on the board.
 
-> **Note:** This project is intended for **educational, development, and offline chess automation**. Do not use it to gain an unfair advantage on online chess platforms.
+The project is built as a learning-focused experiment in combining **Python automation + chess engines + visual board recognition**.
 
-## 🚀 Features
+> ⚠️ **Ethical Use:** Use this project only for learning, local/offline games, testing, or platforms/environments where automation is explicitly permitted. Do not use it to cheat in online games.
 
-- ♟️ Automatic chess move generation
-- 🧠 Chess position analysis using **Stockfish**
-- 📋 FEN and PGN support
-- 🎯 Best-move selection based on engine evaluation
-- 🔄 Automatic game-play loop
-- 🖥️ Optional board/screen automation
-- ⚡ Configurable engine strength and search depth
-- 🐍 Built with Python
+## ✨ What It Does
+
+The bot follows a simple pipeline:
+
+```text
+Chess Board
+    ↓
+Detect / Read Position
+    ↓
+Convert to Chess State
+    ↓
+Stockfish Analysis
+    ↓
+Choose Best Move
+    ↓
+Automate the Move
+    ↓
+Repeat
+```
+
+### Key capabilities
+
+- ♟️ Detects the current chess position
+- 🧠 Uses **Stockfish** for move analysis
+- 🔄 Repeats the detect → analyse → move cycle
+- 🖥️ Supports screen/mouse automation
+- 📋 Works with standard chess representations such as FEN/board state
+- ⚙️ Configurable engine settings
 
 ## 🛠️ Tech Stack
 
-- **Python 3**
-- **python-chess** — chess board representation, legal moves, FEN/PGN handling
-- **Stockfish** — chess engine for position evaluation
-- **PyAutoGUI** *(optional)* — screen/mouse automation
+| Technology | Purpose |
+|---|---|
+| **Python** | Core implementation |
+| **OpenCV** | Computer vision / board recognition |
+| **python-chess** | Board state, legal moves and chess utilities |
+| **Stockfish** | Position evaluation and move selection |
+| **PyAutoGUI** | Mouse / keyboard automation |
 
-## 📁 Project Structure
+## 📂 Project Structure
 
 ```text
 chess-auto-bot/
 │
-├── main.py              # Main entry point
-├── bot.py               # Bot logic
-├── engine.py            # Stockfish integration
-├── config.py            # Configuration
-├── utils.py             # Helper functions
-│
+├── *.py                 # Bot / vision / chess logic
 ├── requirements.txt     # Python dependencies
-├── README.md
-└── assets/              # Screenshots / resources
+├── README
+└── assets/              # Images and other resources
 ```
 
-## ⚙️ Installation
+> The exact files may evolve as the project develops.
+
+## ⚙️ Setup
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/chess-auto-bot.git
+git clone https://github.com/utkdwivedi/chess-auto-bot.git
 cd chess-auto-bot
 ```
 
-### 2. Install dependencies
+### 2. Install Python dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Example:
-
-```text
-python-chess
-pyautogui
-```
-
 ### 3. Install Stockfish
 
-Download and install the Stockfish chess engine, then configure its executable path in the project.
+Install the Stockfish executable for your operating system and configure its path in the project.
 
 Example:
 
@@ -70,105 +83,83 @@ Example:
 STOCKFISH_PATH = "path/to/stockfish"
 ```
 
-## ▶️ Usage
+## ▶️ Running the Bot
 
-Run:
+Run the project's main Python entry point:
 
 ```bash
 python main.py
 ```
 
-The basic workflow is:
-
-```text
-Chess Position
-      ↓
-Read Board State
-      ↓
-Generate Legal Moves
-      ↓
-Stockfish Analysis
-      ↓
-Select Best Move
-      ↓
-Execute Move
-      ↓
-Repeat
-```
+> If the entry-point filename changes, use the corresponding script in the repository.
 
 ## 🧠 How It Works
 
-The bot first obtains the current board position and represents it using `python-chess`.
+### 1. Board Detection
 
-Stockfish then evaluates possible moves and returns the strongest move according to its search.
+The bot identifies the chessboard and extracts the current position from the screen.
 
-For example:
+### 2. Chess State
 
-```python
-import chess
-import chess.engine
+The detected board is converted into a representation that chess libraries can understand.
 
-board = chess.Board()
+### 3. Engine Analysis
 
-engine = chess.engine.SimpleEngine.popen_uci(STOCKFISH_PATH)
+Stockfish searches candidate moves and returns the engine's preferred move at the configured depth/time limit.
 
-result = engine.analyse(
-    board,
-    chess.engine.Limit(depth=15)
-)
+### 4. Move Automation
 
-best_move = result["pv"][0]
+The selected move is translated into screen coordinates and executed using mouse automation.
 
-print("Best move:", best_move)
+### 5. Repeat
 
-engine.quit()
-```
+After the board updates, the bot reads the new position and repeats the process.
 
-## 📊 Configuration
+## 📊 Engine Configuration
 
-You can modify parameters such as:
+Typical engine parameters can be adjusted depending on the implementation:
 
 ```python
 ENGINE_DEPTH = 15
 TIME_LIMIT = 1.0
 ```
 
-Higher engine depth generally means stronger but slower analysis.
+Increasing search depth generally gives Stockfish more time to analyse, at the cost of speed.
 
-## 🔮 Future Improvements
+## 🎯 Learning Objectives
 
-- Add a graphical chess interface
-- Add move-history visualization
-- Implement opening-book support
-- Add configurable playing strength
-- Improve board-state recognition
-- Add game analysis and statistics
-- Build a web-based interface
+This project explores several practical concepts:
 
-## 🎯 Learning Goals
+- Computer vision
+- Chess board representation
+- Chess engine integration
+- Process control and automation
+- Coordinate mapping
+- Python scripting
+- Working with external executables
 
-This project is useful for learning:
+## 🚧 Future Improvements
 
-- Python
-- Object-oriented programming
-- Chess algorithms
-- FEN/PGN representation
-- Minimax/engine concepts
-- API/process integration
-- Computer vision and GUI automation *(when used offline)*
+- More robust piece recognition
+- Automatic board calibration
+- Better handling of animations and transitions
+- Improved error recovery
+- Game recording and statistics
+- Configurable engine strength
+- Cleaner modular architecture
+- Automated testing
 
-## ⚠️ Disclaimer
+## ⚠️ Responsible Use
 
-This project is created for **learning and experimentation**. Any screen automation should be used with chess software or environments where automation is permitted, such as local/offline games and personal testing environments.
+This repository is intended for **education and experimentation**. Always follow the rules of the chess platform or application on which the software is used.
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Utkarsh Dwivedi**
 
-[GitHub](https://github.com/yourusername) • [LinkedIn](https://linkedin.com/)
+- GitHub: [@utkdwivedi](https://github.com/utkdwivedi)
+- Repository: [chess-auto-bot](https://github.com/utkdwivedi/chess-auto-bot)
 
 ---
 
-### ⭐ If you find this project useful
-
-Give the repository a ⭐ and feel free to experiment with the code.
+⭐ Built to learn by combining chess, computer vision, and automation.
